@@ -1,0 +1,13 @@
+@{
+    Layout="_Layout";
+}
+<div class="container">
+    <div class="row">
+         <div class="col-4 pb-3">
+            @RenderSection("Sidebar", false)
+        </div>
+        <main role="main" class="col-8 pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</div>

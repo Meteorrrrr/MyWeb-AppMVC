@@ -1,0 +1,60 @@
+@model IEnumerable<Post>
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@{
+    ViewData["Title"] = "Danh sách BLog";
+    Layout =  "/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<partial name="_StatusMessage"/>
+
+<p>
+    <a asp-action="Create">Tạo bài viết mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateUpdated)
+            </th>
+        
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <th>
+           <a asp-action="Detail" asp-route-id="@item.PostId">@item.Title</a>
+            </th>
+            <th>
+                @Html.DisplayFor(model => item.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayFor(model => item.DateUpdated)
+            </th>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PostId">Sửa</a> |
+                <a asp-action="Delete" asp-route-id="@item.PostId">Xóa</a>
+            </td>
+        </tr>
+            
+        }
+
+    </tbody>
+</table>
+@{
+    _AdminSidebarService.SetActive("Post", "Index", "Blog");
+}
+
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

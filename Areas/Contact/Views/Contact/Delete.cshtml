@@ -1,0 +1,62 @@
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@model MVC_1.Models_Contact.Contact
+
+@{
+   ViewData["Title"] = "Xóa liên hệ";
+    Layout =  "/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>ban co chac chan muon xoa ko?</h3>
+<div>
+    <h4>Lien he</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateSend)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateSend)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+@{
+    _AdminSidebarService.SetActive("Contact", "Index", "Contact");
+}
+
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

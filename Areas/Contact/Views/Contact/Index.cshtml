@@ -1,0 +1,70 @@
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@model IEnumerable<MVC_1.Models_Contact.Contact>
+
+@{
+    ViewData["Title"] = "Quản lý liên hệ";
+    Layout =  "/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Trang quản lý liên hệ</h1>
+
+<p>
+    <a asp-action="SendContact">Tạo mới liên hệ</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateSend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateSend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                <a asp-area="Contact" asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-area="Contact" asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-area="Contact" asp-action="Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    _AdminSidebarService.SetActive("Contact", "Index", "Contact");
+}
+
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

@@ -1,0 +1,65 @@
+@using App.Component
+@model List<Post>
+@{
+   var list= ViewBag.categories as List<Category>;
+   var categoryslug=ViewBag.categoryslug as string;
+   var category=ViewBag.category as Category;
+   var listparent=ViewBag.listparent as List<Category>;
+   ViewData["Title"]=(category!=null)?category.Title:"Bai viet tat cac cac danh muc";
+
+}
+<div class="p-3 mb-2 bg-light text-dark">
+<nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="~/">Home</a></li>
+        @if(listparent!=null)
+        {
+         @foreach (var item in listparent)
+         {
+              <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-categoryslug=@item.Slug>@item.Title</a>
+               </li>           
+         }
+        }
+       </ol>
+</div>
+<h3>@ViewData["Title"]</h3>
+@if(category!=null)
+{
+   <p>@category.Content</p>
+}
+else
+{
+   <p>Tat ca cac bai viet.....</p>
+}
+
+@foreach (var item in Model)
+{
+
+ <div class="media border-bottom mb-3 pb-3">
+   <div class="media-left">
+    <img src="/File/noImage.jpg" class="mr-3 w-25" >
+  </div>
+  <div class="media-body">
+    <h5 class="mt-0">
+      <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug=@item.Slug>
+         @item.Title
+      </a>
+    </h5>
+    @Html.Raw(item.Content)
+    <div class="author-row">Tác giả:@item.Author | Ngày cập nhập:@item.DateUpdated.ToShortDateString()</div>
+  </div>
+</div> 
+   
+}     
+@section Sidebar{
+   
+   @await Component.InvokeAsync("App.Component.CategorySidebar",
+   new CategorySidebar.CategorySidebarData()
+   {
+    categories= list,
+    level=0,
+    slugCategory=categoryslug
+   })
+      
+}

@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries":[
+    {
+      "library":"summernote@0.8.20",
+      "destination":"wwwroot/lib/summernote"
+    },
+    {
+    "library": "multiple-select@1.2.3",
+    "destination": "wwwroot/lib/multiple-select"
+    },
+    {
+      "library": "jquery-easing@1.4.1",
+      "destination": "wwwroot/lib/jquery-easing"
+    }
+    ,
+    {
+      "library": "font-awesome@6.4.0",
+      "destination": "wwwroot/lib/font-awesome"
+    }
+    
+  ]
+  
+}

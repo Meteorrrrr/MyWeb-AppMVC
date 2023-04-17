@@ -1,0 +1,52 @@
+@using App.Component
+@model Post
+@{
+    var list = ViewBag.categories as List<Category>;
+    IQueryable<Post> otherpost = ViewBag.otherpost as IQueryable<Post>;
+    //var categoryslug=ViewBag.categoryslug as string;
+    //var category=ViewBag.category as Category;
+}
+
+
+<div>
+  <h2>
+        @Model.Title
+  </h2>
+  <div>
+        @Model.Description
+  </div>
+  <div>
+     <i>Tác giả:@Model.Author?.UserName</i> |
+     <strong>Ngày cập nhập: @Model.DateUpdated</strong>
+  </div>
+
+  <hr>
+  <p>
+        @Html.Raw(@Model.Content)
+  </p>
+</div>
+<h4>Các bài viết liên quan</h4>
+<hr>
+<ul>
+    @foreach (var item in otherpost)
+    {
+           <li>
+              <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug=@item.Slug>
+                @item.Title
+              </a>
+
+           </li>
+    }
+</ul>
+
+@section Sidebar{
+
+    @await Component.InvokeAsync("App.Component.CategorySidebar",
+   new CategorySidebar.CategorySidebarData()
+   {
+    categories= list,
+    level=0,
+    slugCategory=Model.Slug
+   });
+
+}
