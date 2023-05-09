@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC_1.Models;
 
 namespace MVC_1.Controllers;
 
+
+[Authorize(Roles ="Admin")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -12,11 +15,12 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-
+    //[Authorize(Policy="CanView")]
     public IActionResult Index()
     
     {
-
+        
+       
         return View();
     }
 

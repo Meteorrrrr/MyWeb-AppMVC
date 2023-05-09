@@ -12,7 +12,7 @@ namespace MVC_1.Models
           public string? HomeAdress { get; set; }
 
           // [Required]       
-          [DataType(DataType.Date)]
+          [DataType(DataType.DateTime)]
           public DateTime? BirthDate { get; set; }
     }
 }

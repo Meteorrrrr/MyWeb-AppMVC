@@ -5,7 +5,7 @@
    var categoryslug=ViewBag.categoryslug as string;
    var category=ViewBag.category as Category;
    var listparent=ViewBag.listparent as List<Category>;
-   ViewData["Title"]=(category!=null)?category.Title:"Bai viet tat cac cac danh muc";
+   ViewData["Title"]=(category!=null)?category.Title:"Tất cả các bài viết ";
 
 }
 <div class="p-3 mb-2 bg-light text-dark">
@@ -30,27 +30,31 @@
 }
 else
 {
-   <p>Tat ca cac bai viet.....</p>
+   
 }
 
 @foreach (var item in Model)
 {
+<div class="m-2">
+    <div class="d-flex">
+        <div class="flex-shrink-0">
+            <img src="/File/anh-c-sharp.png" width="100" height="100" alt="Sample Image">
+        </div>
+        <div class="flex-grow-1 ms-3">
+           <h5 class="mt-0">
+            <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug=@item.Slug>
+               @item.Title
+            </a>
+           </h5>
+              <p>@Html.Raw(item.Description)</p>
+            <div>
+               Tác giả:<i> @item.Author?.UserName</i> | <strong>Ngày cập nhập:@item.DateUpdated.ToShortDateString()</strong>
 
- <div class="media border-bottom mb-3 pb-3">
-   <div class="media-left">
-    <img src="/File/noImage.jpg" class="mr-3 w-25" >
-  </div>
-  <div class="media-body">
-    <h5 class="mt-0">
-      <a asp-controller="ViewPost" asp-action="Detail" asp-route-postslug=@item.Slug>
-         @item.Title
-      </a>
-    </h5>
-    @Html.Raw(item.Content)
-    <div class="author-row">Tác giả:@item.Author | Ngày cập nhập:@item.DateUpdated.ToShortDateString()</div>
-  </div>
-</div> 
-   
+               </div>
+        </div>
+    </div>
+</div>
+<hr>
 }     
 @section Sidebar{
    

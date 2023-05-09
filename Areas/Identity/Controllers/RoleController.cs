@@ -13,7 +13,7 @@ using MVC_1.Models;
 namespace App.Areas.Identity.Controllers
 {
 
-    [Authorize]
+    [Authorize()]
     [Area("Identity")]
     [Route("/Role/[action]")]
     public class RoleController : Controller

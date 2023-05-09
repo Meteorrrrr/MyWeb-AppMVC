@@ -17,7 +17,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ParentId" class="control-label"></label>
-                <select asp-for="ParentId" class ="form-control" asp-items="ViewBag.ParentId"></select>
+                <select asp-for="ParentId" class ="form-control" asp-items=@(ViewData["ParentId"] as SelectList)></select>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>

@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,8 @@ using MVC_1.Models;
 namespace MVC_1.Areas_Blog_Controllers
 {
     [Area("Blog")]
-    [Route("/blog/{action}")]
+    [Route("/blog/{action}/{id?}")]
+    [Authorize]
     public class CategoryController:Controller
     {
         private readonly AppDbContext _context;
@@ -19,8 +22,9 @@ namespace MVC_1.Areas_Blog_Controllers
             _context = context;
         }
         [TempData]
-        public string StatusMessage {set;get;}
+        public string? StatusMessage {set;get;}
         public async Task<IActionResult> Index()
+
         {
             var qr=(from c in _context.Categories select c)
             .Include(c=>c.CategoryChildren)
@@ -38,6 +42,7 @@ namespace MVC_1.Areas_Blog_Controllers
             var qr=(from c in _context.Categories select c)
             .Include(c=>c.CategoryChildren)
             .Include(c=>c.ParentCategory);
+            
             var categories=(await qr.ToListAsync()).Where(c=>c.ParentCategory==null).ToList();
             
              categories.Insert(0,new Category(){
@@ -50,6 +55,7 @@ namespace MVC_1.Areas_Blog_Controllers
 
             var selectlist=new SelectList(categorieslist,"Id","Title",-1);
             ViewData["ParentId"]=selectlist;
+       
             
             return View ();
         }
@@ -87,6 +93,7 @@ namespace MVC_1.Areas_Blog_Controllers
 
             return View();
         }
+        
         private void GetSelectListCatergory(List<Category> sourse,List<Category> des,int level)
         {
             var prefix=String.Concat(Enumerable.Repeat("---",level));
@@ -151,20 +158,25 @@ namespace MVC_1.Areas_Blog_Controllers
                 return NotFound();
             }
 
+           
+            
 
-            // var categorie= await _context.Categories
+             var categorie=  _context.Categories
+             .Include(c=>c.CategoryChildren)
+             .Include(c=>c.ParentCategory)
+             .AsEnumerable()
+             .Where(c=>c.ParentCategory==null).ToList();
+
+
+            // var qr=(from c in _context.Categories select c)
             // .Include(c=>c.CategoryChildren)
-            // .Include(c=>c.ParentCategory)
-            // .Where(c=>c.ParentCategory==null).ToListAsync();
-            var qr=(from c in _context.Categories select c)
-            .Include(c=>c.CategoryChildren)
-            .Include(c=>c.ParentCategory);
-            var categorie=(await qr.ToListAsync()).Where(c=>c.ParentCategory==null).ToList();
-              categorie.Insert(0,new Category(){
-                Id=-1,
-                Title="Không có lớp cha"
+            // .Include(c=>c.ParentCategory);
+            // var categorie=(await qr.ToListAsync()).Where(c=>c.ParentCategory==null).ToList();
+            //   categorie.Insert(0,new Category(){
+            //     Id=-1,
+            //     Title="Không có lớp cha"
 
-            });
+            // });
 
             var categorieslist=new List<Category>();
             GetSelectListCatergory(categorie,categorieslist,0);

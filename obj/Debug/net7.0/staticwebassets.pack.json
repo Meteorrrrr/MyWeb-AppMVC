@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\File\\3fk4y3b0.jpg"
     },
     {
+      "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\anh-c-sharp.png",
+      "PackagePath": "staticwebassets\\File\\anh-c-sharp.png"
+    },
+    {
       "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\aokjskue.jpg",
       "PackagePath": "staticwebassets\\File\\aokjskue.jpg"
     },
@@ -29,14 +33,6 @@
       "PackagePath": "staticwebassets\\File\\hinh-anh-thien-ha.jpg"
     },
     {
-      "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\li3bg4n3.jpg",
-      "PackagePath": "staticwebassets\\File\\li3bg4n3.jpg"
-    },
-    {
-      "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\noImage.jpg",
-      "PackagePath": "staticwebassets\\File\\noImage.jpg"
-    },
-    {
       "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\nueifmcz.jpg",
       "PackagePath": "staticwebassets\\File\\nueifmcz.jpg"
     },
@@ -47,10 +43,6 @@
     {
       "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\phong-canh-dep.jpg",
       "PackagePath": "staticwebassets\\File\\phong-canh-dep.jpg"
-    },
-    {
-      "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\qrelguut.jpg",
-      "PackagePath": "staticwebassets\\File\\qrelguut.jpg"
     },
     {
       "Id": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\vwcqqtb0.jpg",

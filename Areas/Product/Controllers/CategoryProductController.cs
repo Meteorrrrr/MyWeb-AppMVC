@@ -19,15 +19,21 @@ namespace AppMvc.Net.Areas.Product.Controllers
     public class CategoryProductController : Controller
     {
         private readonly AppDbContext _context;
+        
 
         public CategoryProductController(AppDbContext context)
         {
             _context = context;
         }
+        
+
+        [TempData]
+        public string StatusMessage{set;get;}
 
         // GET: Blog/Category
         public async Task<IActionResult> Index()
         {
+           
             var qr = (from c in _context.CategoryProducts select c)
                      .Include(c => c.ParentCategory)
                      .Include(c => c.CategoryChildren);
@@ -92,6 +98,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
             var items = new List<CategoryProduct>();
             CreateSelectItems(categories, items, 0);
             var selectList = new SelectList(items, "Id", "Title");
+         
 
 
             ViewData["ParentCategoryId"] = selectList;
@@ -313,6 +320,7 @@ namespace AppMvc.Net.Areas.Product.Controllers
 
             _context.CategoryProducts.Remove(category);
             await _context.SaveChangesAsync();
+            StatusMessage="success: ban da xoa thanh cong !";
 
             
             return RedirectToAction(nameof(Index));

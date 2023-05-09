@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CECknC3iMAKqp1omxYbBB4xvsWE+ICl4ceuI46EnrJ4=",
+  "Hash": "VhmW1ni9FbUlTvr3JDP+Pw8R8GqtzFsku0InAWyoUHw=",
   "Source": "MVC-1",
   "BasePath": "_content/MVC-1",
   "Mode": "Default",
@@ -1139,6 +1139,23 @@
       "OriginalItemSpec": "wwwroot\\File\\3fk4y3b0.jpg"
     },
     {
+      "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\anh-c-sharp.png",
+      "SourceId": "MVC-1",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\",
+      "BasePath": "_content/MVC-1",
+      "RelativePath": "File/anh-c-sharp.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\File\\anh-c-sharp.png"
+    },
+    {
       "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\aokjskue.jpg",
       "SourceId": "MVC-1",
       "SourceType": "Discovered",
@@ -1224,40 +1241,6 @@
       "OriginalItemSpec": "wwwroot\\File\\hinh-anh-thien-ha.jpg"
     },
     {
-      "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\li3bg4n3.jpg",
-      "SourceId": "MVC-1",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\",
-      "BasePath": "_content/MVC-1",
-      "RelativePath": "File/li3bg4n3.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\File\\li3bg4n3.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\noImage.jpg",
-      "SourceId": "MVC-1",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\",
-      "BasePath": "_content/MVC-1",
-      "RelativePath": "File/noImage.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\File\\noImage.jpg"
-    },
-    {
       "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\nueifmcz.jpg",
       "SourceId": "MVC-1",
       "SourceType": "Discovered",
@@ -1307,23 +1290,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\File\\phong-canh-dep.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\qrelguut.jpg",
-      "SourceId": "MVC-1",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\",
-      "BasePath": "_content/MVC-1",
-      "RelativePath": "File/qrelguut.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\File\\qrelguut.jpg"
     },
     {
       "Identity": "C:\\Users\\ADMIN\\Desktop\\C#\\ASP.NET-MVC\\MVC01\\wwwroot\\File\\vwcqqtb0.jpg",

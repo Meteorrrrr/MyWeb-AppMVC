@@ -294,6 +294,7 @@ namespace App.Areas.Identity.Controllers
         // GET: /Manage/RemovePhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> RemovePhoneNumber()
         {
             var user = await GetCurrentUserAsync();

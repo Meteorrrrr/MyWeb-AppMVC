@@ -16,12 +16,13 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using MVC_1.Models;
+using CustomAttribute.Utility;
 
 namespace AppMvc.Areas.Product.Controllers
 {
     [Area("Product")]
-    [Route("admin/productmanage/[action]/{id?}")]
-    [Authorize(Roles = RoleName.Administrator+  "," + RoleName.Editor)]
+    [Route("admin/productmanage/{action}/{id?}")]
+    [Authorize(Roles = RoleName.Administrator + "," + RoleName.Editor)]
     public class ProductManageController : Controller
     {
         private readonly AppDbContext _context;
@@ -36,25 +37,26 @@ namespace AppMvc.Areas.Product.Controllers
         [TempData]
         public string StatusMessage { get; set; }
         // GET: Blog/Post
-        public async Task<IActionResult> Index([FromQuery(Name = "p")]int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
         {
             var posts = _context.Products
                         .Include(p => p.Author)
                         .OrderByDescending(p => p.DateUpdated);
 
-            int totalPosts = await posts.CountAsync();  
-            if (pagesize <=0) pagesize = 10;
+            int totalPosts = await posts.CountAsync();
+            if (pagesize <= 0) pagesize = 10;
             int countPages = (int)Math.Ceiling((double)totalPosts / pagesize);
- 
-            if (currentPage > countPages) currentPage = countPages;     
-            if (currentPage < 1) currentPage = 1; 
+
+            if (currentPage > countPages) currentPage = countPages;
+            if (currentPage < 1) currentPage = 1;
 
             var pagingModel = new PagingModel()
             {
                 countpages = countPages,
                 currentpage = currentPage,
-                generateUrl = (pageNumber) => Url.Action("Index", new {
-                    p =  pageNumber,
+                generateUrl = (pageNumber) => Url.Action("Index", new
+                {
+                    p = pageNumber,
                     pagesize = pagesize
                 })
             };
@@ -67,9 +69,9 @@ namespace AppMvc.Areas.Product.Controllers
             var postsInPage = await posts.Skip((currentPage - 1) * pagesize)
                              .Take(pagesize)
                              .Include(p => p.ProductCategoryProducts)
-                             .ThenInclude(pc  => pc.Category)
-                             .ToListAsync();   
-                        
+                             .ThenInclude(pc => pc.Category)
+                             .ToListAsync();
+
             return View(postsInPage);
         }
 
@@ -117,7 +119,7 @@ namespace AppMvc.Areas.Product.Controllers
             //     product.Slug = AppUtilities.GenerateSlug(product.Title);
             // }
 
-            if(await _context.Products.AnyAsync(p => p.Slug == product.Slug))
+            if (await _context.Products.AnyAsync(p => p.Slug == product.Slug))
             {
                 ModelState.AddModelError("Slug", "Nhập chuỗi Url khác");
                 return View(product);
@@ -163,7 +165,7 @@ namespace AppMvc.Areas.Product.Controllers
             }
 
             // var post = await _context.Posts.FindAsync(id);
-            var product = await _context.Products.Include(p => p.ProductCategoryProducts).FirstOrDefaultAsync(p=> p.ProductID == id);
+            var product = await _context.Products.Include(p => p.ProductCategoryProducts).FirstOrDefaultAsync(p => p.ProductID == id);
             if (product == null)
             {
                 return NotFound();
@@ -177,12 +179,12 @@ namespace AppMvc.Areas.Product.Controllers
                 Description = product.Description,
                 Slug = product.Slug,
                 Published = product.Published,
-                CategoryIDs  =  product.ProductCategoryProducts.Select(pc => pc.CategoryID).ToArray(),
+                CategoryIDs = product.ProductCategoryProducts.Select(pc => pc.CategoryID).ToArray(),
                 Price = product.Price
             };
 
             var categories = await _context.CategoryProducts.ToListAsync();
-            ViewData["categories"] = new MultiSelectList(categories, "Id", "Title");          
+            ViewData["categories"] = new MultiSelectList(categories, "Id", "Title");
 
             return View(postEdit);
         }
@@ -199,7 +201,7 @@ namespace AppMvc.Areas.Product.Controllers
                 return NotFound();
             }
             var categories = await _context.CategoryProducts.ToListAsync();
-            ViewData["categories"] = new MultiSelectList(categories, "Id", "Title");     
+            ViewData["categories"] = new MultiSelectList(categories, "Id", "Title");
 
 
             // if (product.Slug == null)
@@ -207,7 +209,7 @@ namespace AppMvc.Areas.Product.Controllers
             //     product.Slug = AppUtilities.GenerateSlug(product.Title);
             // }
 
-            if(await _context.Products.AnyAsync(p => p.Slug == product.Slug && p.ProductID != id))
+            if (await _context.Products.AnyAsync(p => p.Slug == product.Slug && p.ProductID != id))
             {
                 ModelState.AddModelError("Slug", "Nhập chuỗi Url khác");
                 return View(product);
@@ -219,7 +221,7 @@ namespace AppMvc.Areas.Product.Controllers
                 try
                 {
 
-                    var productUpdate = await _context.Products.Include(p => p.ProductCategoryProducts).FirstOrDefaultAsync(p=> p.ProductID == id);
+                    var productUpdate = await _context.Products.Include(p => p.ProductCategoryProducts).FirstOrDefaultAsync(p => p.ProductID == id);
                     if (productUpdate == null)
                     {
                         return NotFound();
@@ -235,7 +237,7 @@ namespace AppMvc.Areas.Product.Controllers
 
 
                     // Update PostCategory
-                    if (product.CategoryIDs == null) product.CategoryIDs = new int[] {};
+                    if (product.CategoryIDs == null) product.CategoryIDs = new int[] { };
 
                     var oldCateIds = productUpdate.ProductCategoryProducts.Select(c => c.CategoryID).ToArray();
                     var newCateIds = product.CategoryIDs;
@@ -249,13 +251,14 @@ namespace AppMvc.Areas.Product.Controllers
                                      where !oldCateIds.Contains(CateId)
                                      select CateId;
 
-                     foreach (var CateId in addCateIds)
-                     {
-                         _context.ProductCategoryProducts.Add(new ProductCategoryProduct(){
-                             ProductID = id,
-                             CategoryID = CateId
-                         });
-                     }      
+                    foreach (var CateId in addCateIds)
+                    {
+                        _context.ProductCategoryProducts.Add(new ProductCategoryProduct()
+                        {
+                            ProductID = id,
+                            CategoryID = CateId
+                        });
+                    }
 
                     _context.Update(productUpdate);
 
@@ -313,7 +316,7 @@ namespace AppMvc.Areas.Product.Controllers
             _context.Products.Remove(post);
             await _context.SaveChangesAsync();
 
-            StatusMessage = "Bạn vừa xóa bài viết: "  + post.Title;
+            StatusMessage = "Bạn vừa xóa bài viết: " + post.Title;
 
             return RedirectToAction(nameof(Index));
         }
@@ -329,7 +332,8 @@ namespace AppMvc.Areas.Product.Controllers
             [DataType(DataType.Upload)]
             [FileExtensions(Extensions = "png,jpg,jpeg,gif")]
             [Display(Name = "Chọn file upload")]
-            public IFormFile FileUpload { get; set; }
+            //[AllowedExtensionsAttribute(extendfile: new string[] { ".png" }, ErrorMessage = "chi chap nhan file .png")]
+            public IFormFile? FileUpload { get; set; }
         }
 
         [HttpGet]
@@ -347,11 +351,26 @@ namespace AppMvc.Areas.Product.Controllers
         }
 
         [HttpPost, ActionName("UploadPhoto")]
-        public async Task<IActionResult> UploadPhotoAsync(int id, [Bind("FileUpload")]UploadOneFile f)
+        public async Task<IActionResult> UploadPhotoAsync(int id, [Bind("FileUpload")] UploadOneFile f)
         {
             var product = _context.Products.Where(e => e.ProductID == id)
-                .Include(p => p.Photos)
-                .FirstOrDefault();
+                            .Include(p => p.Photos)
+                            .FirstOrDefault();
+            if (product == null)
+            {
+                return NotFound("Không có sản phẩm");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["product"] = product;
+                return View(new UploadOneFile());
+
+            }
+            
+            product = _context.Products.Where(e => e.ProductID == id)
+              .Include(p => p.Photos)
+              .FirstOrDefault();
 
             if (product == null)
             {
@@ -365,13 +384,14 @@ namespace AppMvc.Areas.Product.Controllers
                 //             + Path.GetExtension(f.FileUpload.FileName);
 
                 var file = Path.Combine("wwwroot", "File", f.FileUpload.FileName);
-                            
+
                 using (var filestream = new FileStream(file, FileMode.Create))
                 {
                     await f.FileUpload.CopyToAsync(filestream);
                 }
 
-                _context.Add(new ProductPhoto() {
+                _context.Add(new ProductPhoto()
+                {
                     ProductID = product.ProductID,
                     FileName = f.FileUpload.FileName
                 });
@@ -381,7 +401,7 @@ namespace AppMvc.Areas.Product.Controllers
 
 
             return View(f);
-        }   
+        }
 
         [HttpPost]
         public IActionResult ListPhotos(int id)
@@ -393,32 +413,35 @@ namespace AppMvc.Areas.Product.Controllers
             if (product == null)
             {
                 return Json(
-                    new {
+                    new
+                    {
                         success = 0,
                         message = "Product not found",
                     }
                 );
             }
 
-           var listphotos = product.Photos.Select(photo => new {
+            var listphotos = product.Photos.Select(photo => new
+            {
                 id = photo.Id,
                 path = "/File/" + photo.FileName
             });
 
             return Json(
-                new { 
+                new
+                {
                     success = 1,
                     photos = listphotos
                 }
             );
 
-            
+
         }
 
         [HttpPost]
         public IActionResult DeletePhoto(int id)
         {
-           
+
             var photo = _context.ProductPhotos.Where(p => p.Id == id).FirstOrDefault();
             if (photo != null)
             {
@@ -427,13 +450,13 @@ namespace AppMvc.Areas.Product.Controllers
 
                 var filename = "wwwroot/File/" + photo.FileName;
                 System.IO.File.Delete(filename);
-                
-            }         
+
+            }
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadPhotoApi(int id, [Bind("FileUpload")]UploadOneFile f)
+        public async Task<IActionResult> UploadPhotoApi(int id, [Bind("FileUpload")] UploadOneFile f)
         {
             var product = _context.Products.Where(e => e.ProductID == id)
                 .Include(p => p.Photos)
@@ -443,21 +466,22 @@ namespace AppMvc.Areas.Product.Controllers
             {
                 return NotFound("Không có sản phẩm");
             }
-            
+
 
             if (f != null)
             {
                 var file1 = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
                             + Path.GetExtension(f.FileUpload.FileName);
 
-                var file = Path.Combine("wwwroot","File", file1);
-                            
+                var file = Path.Combine("wwwroot", "File", file1);
+
                 using (var filestream = new FileStream(file, FileMode.Create))
                 {
                     await f.FileUpload.CopyToAsync(filestream);
                 }
 
-                _context.Add(new ProductPhoto() {
+                _context.Add(new ProductPhoto()
+                {
                     ProductID = product.ProductID,
                     FileName = file1
                 });
@@ -467,7 +491,7 @@ namespace AppMvc.Areas.Product.Controllers
 
 
             return Ok();
-        }   
+        }
 
     }
 }

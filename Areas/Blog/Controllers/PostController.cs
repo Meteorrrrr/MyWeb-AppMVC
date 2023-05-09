@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,26 +10,36 @@ using Microsoft.EntityFrameworkCore;
 using MVC_1.Models;
 namespace MVC_1.Areas_Blog_Controllers
 {
+    
     [Area("Blog")]
     [Route("/blog/post/{action}/{id?}")]
+ 
     public class PostController:Controller
     {
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signinManager;
 
-        public PostController(SignInManager<AppUser> signinManager,AppDbContext context,UserManager<AppUser> userManager)
+        private readonly IAuthorizationService _authorService;
+        
+
+    
+
+        public PostController(SignInManager<AppUser> signinManager,AppDbContext context,UserManager<AppUser> userManager,IAuthorizationService authorizationService)
         
         {
             _userManager=userManager;
             _context = context;
             _signinManager=signinManager;
+            _authorService=authorizationService;
         }
         [TempData]
-        public string StatusMessage {set;get;}
+        public string? StatusMessage {set;get;}
         public async Task<IActionResult> Index()
         {
-            var qr= from c in _context.Posts select c;
+            var qr= from c in _context.Posts 
+                    orderby c.DateUpdated descending
+                    select c;
             var post=await qr.ToListAsync();
            
             return View(post);
@@ -55,10 +66,11 @@ namespace MVC_1.Areas_Blog_Controllers
 
             //Kiểm tra người dùng đã đăng nhập hay chưa
             //Nếu chưa thì chuyển về trang đăng nhập
-            if(User.Identity.IsAuthenticated==false)
-            {
-                return RedirectToAction("Login","Account",new{area="Identity"});
-            }
+
+            // if(User.Identity.IsAuthenticated==false)
+            // {
+            //     return RedirectToAction("Login","Account",new{area="Identity"});
+            // }
          
 
             createPost.DateCreated=createPost.DateUpdated=DateTime.Now;
@@ -91,17 +103,20 @@ namespace MVC_1.Areas_Blog_Controllers
             ViewData["cateid"]=list;
             return View(createPost);
         }
-
+        
         public async Task<IActionResult> Delete(int id)
-
         {
             var post= await _context.Posts.FindAsync(id);
 
             return View(post);
         }
         [HttpPost,ActionName("Delete")]
+        [Authorize(Policy ="duocxoa")]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
+            var result =await _authorService.AuthorizeAsync(this.User,"duocxoa");
+            if(result.Succeeded)
+            {
             var post= await _context.Posts.FindAsync(id);
             if(post==null)
             {
@@ -110,6 +125,11 @@ namespace MVC_1.Areas_Blog_Controllers
             _context.Remove(post);
             await _context.SaveChangesAsync();
             StatusMessage="Bạn đã xóa bài viết thành công!";
+            }
+            // else 
+            // {
+            //     return RedirectToAction("Account","AccessDenied",new{area="Identity"});
+            // }
 
             return RedirectToAction(nameof(Index));
         }
@@ -134,14 +154,25 @@ namespace MVC_1.Areas_Blog_Controllers
 
            var categories=_context.Categories.ToList();
     
-            var list=new MultiSelectList(categories,"Id","Title",createPost.CategoryID);
+            var list=new MultiSelectList(categories,"Id","Title");
             ViewData["cateid"]=list;
             return View(createPost);
         }
         [HttpPost,ActionName("Edit")]
         public async Task<IActionResult> EditConfirm(int id,[Bind("PostId,Title,Description,Slug,Content,CategoryID")] CreatePost post )
         {
+           
             var p= await _context.Posts.Include(p=>p.PostCategories).FirstOrDefaultAsync(p=>p.PostId==id);
+
+             
+            var result=await _authorService.AuthorizeAsync(this.User,p,"InAge");
+
+            if(!result.Succeeded)
+            {
+                return Content("Ban khong co quyen chinh sua");
+
+            }
+          
             if(id!=post.PostId)
             {
                 return NotFound();
@@ -187,7 +218,10 @@ namespace MVC_1.Areas_Blog_Controllers
                      }       
             
             try{
-                _context.Update(p);
+
+                //có 2 cách để thực hiện update,thêm xóa sửa vào cơ sở dữ liệu
+                _context.Attach(p).State=EntityState.Modified;
+                //_context.Update(p);
                 await _context.SaveChangesAsync();
                 StatusMessage="Bạn đã cập nhập bài viết thành công!";
                 return RedirectToAction(nameof(Index));

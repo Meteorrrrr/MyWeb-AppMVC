@@ -88,7 +88,7 @@ namespace MVC_1.Areas_Blog_Controllers
                               .ThenInclude(p => p.Category)
                               .AsQueryable();
                               
-            posts.OrderByDescending(p=>p.DateUpdated);                 
+            posts=posts.OrderByDescending(p=>p.DateUpdated);                 
                              
             if(category!=null)
             {
@@ -133,6 +133,7 @@ namespace MVC_1.Areas_Blog_Controllers
                listId.Add(postCategory.CategoryID);
 
             }
+       
 
             var otherpost=_context.Posts.Where(p=>p.PostCategories.Any(pc=>listId.Contains(pc.CategoryID)))
                                         .Where(p=>p.PostId!=post.PostId)
